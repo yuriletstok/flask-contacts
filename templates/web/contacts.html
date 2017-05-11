@@ -20,8 +20,17 @@
 			<td>{{ contact.email }}</td>
 			<td>{{ contact.phone }}</td>
 			<td class="text-right">
-				<a class="btn btn-primary" href="{{ url_for('edit_contact', id=contact.id) }}">Edit</a>
-				<a class="btn btn-danger" data-toggle="confirmation" {# data-title="¿Estas seguro?" #} href="{{ url_for('contacts_delete', id=contact.id) }}">Delete</a>
+				<div class="row">
+					<div class="col-xs-6">
+						<a class="btn btn-primary" href="{{ url_for('edit_contact', id=contact.id) }}">Edit</a>
+					</div>
+					<div class="col-xs-6">
+						<form action="{{ url_for('contacts_delete') }}" method="post">
+							<input type="hidden" name="id" value="{{ contact.id }}">
+							<input type="submit" class="btn btn-danger" data-toggle="confirmation" {# data-title="¿Estas seguro?" #} value="Delete">
+						</form>
+					</div>
+				</div>
 			</td>
 		</tr>
 	{% endfor %}

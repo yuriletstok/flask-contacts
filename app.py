@@ -1,5 +1,5 @@
 from flask import Flask, redirect, url_for, render_template, request, flash
-from models import db, Contacts
+from models import db, Contact
 from forms import ContactForm
 
 # Flask
@@ -27,15 +27,15 @@ def new_contact():
     Create new contact
     '''
     form = ContactForm()
-    if request.method == 'POST' and form.validate_on_submit():
+    if form.validate_on_submit():
         # Get form
-        name = request.form['name']
-        surname = request.form['surname']
-        email = request.form['email']
-        phone = request.form['phone']
+        name = form.name.data
+        surname = form.surname.data
+        email = form.email.data
+        phone = form.phone.data
         # Save in database
         try:
-            my_contact = Contacts(name, surname, email, phone)
+            my_contact = Contact(name, surname, email, phone)
             db.session.add(my_contact)
             db.session.commit()
             # User info
@@ -56,13 +56,14 @@ def edit_contact(id):
     :param id: Id from contact
     '''
     form = ContactForm()
-    my_contact = Contacts.query.filter_by(id=id).first()
-    if request.method == 'POST' and form.validate_on_submit():
+    my_contact = Contact.query.filter_by(id=id).first()
+    if form.validate_on_submit():
         # Get form
-        name = request.form['name']
-        surname = request.form['surname']
-        email = request.form['email']
-        phone = request.form['phone']
+        name = form.name.data
+        surname = form.surname.data
+        email = form.email.data
+        phone = form.phone.data
+
         try:
             # Update contact
             my_contact.name = name
@@ -87,7 +88,7 @@ def contacts():
     '''
     Show alls contacts
     '''
-    contacts = Contacts.query.order_by(Contacts.name).all()
+    contacts = Contact.query.order_by(Contact.name).all()
     return render_template('web/contacts.html', contacts=contacts)
 
 
@@ -97,21 +98,21 @@ def search():
     Search
     '''
     name_search = request.args.get('name')
-    all_contacts = Contacts.query.filter(
-        Contacts.name.contains(name_search)
-        ).order_by(Contacts.name).all()
+    all_contacts = Contact.query.filter(
+        Contact.name.contains(name_search)
+        ).order_by(Contact.name).all()
     return render_template('web/contacts.html', contacts=all_contacts)
 
 
-@app.route("/contacts/delete/<id>")
-def contacts_delete(id):
+@app.route("/contacts/delete", methods=('POST',))
+def contacts_delete():
     '''
     Delete contact
 
     :param id: Id from contact
     '''
     try:
-        mi_contacto = Contacts.query.filter_by(id=id).first()
+        mi_contacto = Contact.query.filter_by(id=request.form['id']).first()
         db.session.delete(mi_contacto)
         db.session.commit()
         flash('Delete successfully.', 'danger')
