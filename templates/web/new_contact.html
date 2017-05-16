@@ -3,18 +3,7 @@
 {% block body %}
 <h1>New contact</h1>
 <form action="{{ url_for('new_contact') }}" method="post">
-	{{ form.csrf_token }}
-	{% for field in form %}
-		{% if field.label.text != 'CSRF Token' %}
-		<div class="form-group{%if field.errors %} has-error{% endif %}">
-			{{ field.label }} 
-			{{ field(class='form-control', value='') }}
-			{% for error in field.errors %}
-				<span class="help-block">{{ error }}</span>
-			{% endfor %}
-		</div>
-		{% endif %}
-	{% endfor %}
+	{{ generate_fields(form) }}
 	<input type="submit" class="btn btn-success" value="Add">
 </form>
 {% endblock %}
