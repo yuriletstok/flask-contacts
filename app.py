@@ -27,15 +27,10 @@ def new_contact():
     Create new contact
     '''
     form = ContactForm()
-    if form.validate_on_submit():
-        # Get form
-        name = form.name.data
-        surname = form.surname.data
-        email = form.email.data
-        phone = form.phone.data
-        # Save in database
+    if form.validate_on_submit():        
         try:
-            my_contact = Contact(name, surname, email, phone)
+            my_contact = Contact()
+            form.populate_obj(my_contact)
             db.session.add(my_contact)
             db.session.commit()
             # User info
@@ -56,25 +51,11 @@ def edit_contact(id):
     :param id: Id from contact
     '''
     my_contact = Contact.query.filter_by(id=id).first()
-    form = ContactForm(
-        name=my_contact.name,
-        surname=my_contact.surname,
-        email=my_contact.email,
-        phone=my_contact.phone
-    )
+    form = ContactForm(obj=my_contact)        
     if form.validate_on_submit():
-        # Get form
-        name = form.name.data
-        surname = form.surname.data
-        email = form.email.data
-        phone = form.phone.data
-
         try:
             # Update contact
-            my_contact.name = name
-            my_contact.surname = surname
-            my_contact.email = email
-            my_contact.phone = phone
+            form.populate_obj(my_contact)            
             db.session.add(my_contact)
             db.session.commit()
             # User info
