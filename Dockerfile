@@ -4,7 +4,7 @@ RUN apt-get update -y
 RUN apt-get upgrade -y
 RUN apt-get install -y python3
 
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 RUN python migrations
 RUN python app.py
 
