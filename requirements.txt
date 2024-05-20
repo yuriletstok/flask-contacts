@@ -1,8 +1,9 @@
-Faker==0.7.11
-Flask==2.0.3
-Flask-SQLAlchemy==2.5.1
-Flask-WTF==0.14.3
+Faker==23.1.0
+Flask==3.0.1
+Flask-SQLAlchemy==3.1.1
 gunicorn
-Werkzeug==2.0.3
-Jinja2==3.0.0
+Werkzeug==3.0.0
+Jinja2==3.1.2
 email_validator
+WTForms~=3.1.2
+flask-wtf==1.2.1
