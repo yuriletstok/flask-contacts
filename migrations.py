@@ -1,9 +1,14 @@
 from models import db, Contact
 from faker import Factory
+from app import app
+
+app.app_context().push()
 
 fake = Factory.create()
 # Spanish
-#fake = Factory.create('es_ES')
+# fake = Factory.create('es_ES')
+# fake = Factory.create('he_IL')
+fake = Factory.create('ru_RU')
 # Reload tables
 db.drop_all()
 db.create_all()
